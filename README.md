@@ -1,9 +1,12 @@
-
-# Manual Completo de Instalação e Configuração do Servidor NetPanzer (Ubuntu)
+Claro! Aqui está a versão do seu manual com os **comentários traduzidos para inglês**, mantendo todo o código intacto:
 
 ---
 
-## 1️⃣ Atualização do sistema
+# Complete NetPanzer Server Installation and Configuration Manual (Ubuntu)
+
+---
+
+## 1️⃣ System Update
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -11,9 +14,9 @@ sudo apt update && sudo apt upgrade -y
 
 ---
 
-## 2️⃣ Clonar repositório do jogo
+## 2️⃣ Clone the game repository
 
-Para fins de teste, clonamos a branch **dev**:
+For testing purposes, we clone the **dev** branch:
 
 ```bash
 git clone -b dev https://github.com/ph2708/netpanzer_server.git
@@ -22,9 +25,9 @@ cd netpanzer_server
 
 ---
 
-## 3️⃣ Instalação de dependências
+## 3️⃣ Install dependencies
 
-### Passo a passo individual:
+### Step by step:
 
 ```bash
 sudo apt install scons -y
@@ -35,7 +38,7 @@ sudo apt-get install libsdl2-ttf-dev -y
 sudo apt-get install libsdl2-mixer-dev -y
 ```
 
-### Alternativa com dois comandos encadeados:
+### Alternative with two chained commands:
 
 ```bash
 sudo apt install scons -y
@@ -48,28 +51,28 @@ yes | sudo apt-get install libsdl2-mixer-dev
 
 ---
 
-## 4️⃣ Build do NetPanzer
+## 4️⃣ Build NetPanzer
 
-Compile o jogo dentro da pasta do projeto usando **SCons**:
+Compile the game inside the project folder using **SCons**:
 
 ```bash
 cd ~/netpanzer_server
 scons
 ```
 
-O executável do servidor (`netpanzer`) será gerado na pasta do projeto.
+The server executable (`netpanzer`) will be generated in the project folder.
 
 ---
 
-## 5️⃣ Configuração de unidades e servidor
+## 5️⃣ Configure units and server
 
-### Modificar unidades (ex: Titan)
+### Modify units (e.g., Titan)
 
 ```bash
 nano units/Titan.upf
 ```
 
-Exemplo de atributos:
+Example attributes:
 
 ```text
 hitpoints = 1300;
@@ -82,31 +85,31 @@ speed_rate = 16;
 speed_factor = 2;
 ```
 
-> **OBS:** Para alterar a velocidade de ataque dos Titans, modifique `server.command_burst_limit` no `server.cfg`:
+> **NOTE:** To change the Titan's attack speed, modify `server.command_burst_limit` in `server.cfg`:
 >
 > * `server.command_burst_limit = 16` → reload 12
 > * `server.command_burst_limit = 14` → reload 10
 
 ---
 
-### Configuração do servidor (`server.cfg`)
+### Server configuration (`server.cfg`)
 
-Arquivo localizado em:
+File location:
 
 ```bash
 ~/.netpanzer/config/server.cfg
 ```
 
-* Caso não exista, execute o servidor uma vez para criar o arquivo:
+* If it doesn't exist, run the server once to create the file:
 
 ```bash
 ./netpanzer -d
 
-# Para executar com modo debug
+# To run in debug mode
 ./netpanzer -d -g
 ```
 
-* Edite com:
+* Edit with:
 
 ```bash
 nano ~/.netpanzer/config/server.cfg
@@ -114,35 +117,35 @@ nano ~/.netpanzer/config/server.cfg
 
 ---
 
-## 6️⃣ Iniciar o servidor
+## 6️⃣ Start the server
 
-### Comando padrão:
+### Standard command:
 
 ```bash
 ./netpanzer -d
 ```
 
-### Usando **tmux** para manter o servidor aberto após fechar o terminal:
+### Using **tmux** to keep the server running after closing the terminal:
 
 ```bash
 tmux new -s netpanzer_session
 ./netpanzer -d
 ```
 
-* Para desconectar do tmux: `Ctrl + B`, depois `D`
-* Para reconectar:
+* To detach from tmux: `Ctrl + B`, then `D`
+* To reconnect:
 
 ```bash
 tmux attach -t netpanzer_session
 ```
 
-* Para listar sessões:
+* To list sessions:
 
 ```bash
 tmux ls
 ```
 
-* Para matar processo do servidor (opcional):
+* To kill the server process (optional):
 
 ```bash
 pgrep netpanzer
@@ -151,25 +154,25 @@ kill <PID>
 
 ---
 
-## 7️⃣ Abrir portas no firewall
+## 7️⃣ Open firewall ports
 
-### Usando **firewalld**:
+### Using **firewalld**:
 
 ```bash
 sudo apt install firewalld -y
 sudo systemctl enable firewalld
 sudo systemctl start firewalld
 
-# Abrir portas TCP e UDP 3031
+# Open TCP and UDP ports 3031
 sudo firewall-cmd --zone=public --permanent --add-port=3031/tcp
 sudo firewall-cmd --zone=public --permanent --add-port=3031/udp
 sudo firewall-cmd --reload
 
-# Conferir portas abertas
+# Check open ports
 sudo firewall-cmd --zone=public --list-ports
 ```
 
-### Usando **iptables**:
+### Using **iptables**:
 
 ```bash
 sudo iptables -A INPUT -m state --state NEW -p tcp --dport 3031 -j ACCEPT
@@ -180,29 +183,29 @@ sudo iptables -L INPUT --line-numbers
 
 ---
 
-## 8️⃣ Criar serviço de inicialização automática
+## 8️⃣ Create auto-start service
 
-### Passo 1: Criar script init.d
+### Step 1: Create init.d script
 
 ```bash
 sudo nano /etc/init.d/start-autonetpanzer.sh
 ```
 
-Conteúdo do script (substitua `/home/ubuntu/netpanzer_server/` pelo caminho real):
+Script content (replace `/home/ubuntu/netpanzer_server/` with your actual path):
 
 ```bash
 #!/bin/bash
 
-# Navegue até o diretório do NetPanzer
+# Navigate to the NetPanzer directory
 cd /home/ubuntu/netpanzer_server/
 
-# Execute dentro do tmux usando usuário "ubuntu"
+# Run inside tmux using user "ubuntu"
 su -c 'tmux new-session -d -s netpanzer_session "/home/ubuntu/netpanzer_server/netpanzer -d"' ubuntu
 
 exit 0
 ```
 
-### Passo 2: Permissões e registro
+### Step 2: Permissions and registration
 
 ```bash
 sudo chmod +x /etc/init.d/start-autonetpanzer.sh
@@ -213,9 +216,9 @@ sudo chmod +x /etc/rc2.d/S99start-autonetpanzer.sh
 
 ---
 
-## 9️⃣ Modelos de `server.cfg`
+## 9️⃣ `server.cfg` templates
 
-### 9.1 Server Normal
+### 9.1 Normal Server
 
 ```text
 player.name = "NETPANZER.COM.BR 02 (NORMAL)"
@@ -230,7 +233,7 @@ game.gametype = 0
 ...
 ```
 
-### 9.2 Server Fights
+### 9.2 Fights Server
 
 ```text
 player.name = "NETPANZER.COM.BR 01 (FIGHTS)"
@@ -241,7 +244,7 @@ game.gametype = 1
 ...
 ```
 
-### 9.3 Server Walhalla (Extreme Fights)
+### 9.3 Walhalla Server (Extreme Fights)
 
 ```text
 player.name = "NETPANZER.COM.BR 03 (EXTREME FIGHTS)"
@@ -252,29 +255,34 @@ game.gametype = 1
 ...
 ```
 
-> Preencha os demais parâmetros conforme seu gosto.
+> Fill the remaining parameters as you wish.
 
 ---
 
-## 🔧 10️⃣ Liberar espaço no servidor
+## 🔧 10️⃣ Free up server space
 
-### Expandir volume lógico:
+### Expand logical volume:
 
 ```bash
 sudo lvextend -L +10G /dev/ubuntu-vg/ubuntu-lv
 sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
 ```
 
-### Limpar logs antigos:
+### Clean old logs:
 
 ```bash
 cd /var/log
-sudo du -h --max-depth=1   # Verificar quais pastas/logs ocupam mais espaço
-sudo rm -rf <arquivo_grande.log>
+sudo du -h --max-depth=1   # Check which folders/logs take up the most space
+sudo rm -rf <large_file.log>
 sudo journalctl --vacuum-size=50M
 ```
 
 ---
+
+Se você quiser, eu posso criar **uma versão completamente formatada em Markdown pronta para publicar**, mantendo os comentários em inglês e com destaques de código mais limpos para leitura.
+
+Quer que eu faça isso?
+
 
 
 -----------------------MODELO SERVER.CFG SERVER NORMAL------------------------------------
