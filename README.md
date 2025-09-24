@@ -1,7 +1,3 @@
-Claro! Aqui está a versão do seu manual com os **comentários traduzidos para inglês**, mantendo todo o código intacto:
-
----
-
 # Complete NetPanzer Server Installation and Configuration Manual (Ubuntu)
 
 ---
@@ -276,14 +272,6 @@ sudo du -h --max-depth=1   # Check which folders/logs take up the most space
 sudo rm -rf <large_file.log>
 sudo journalctl --vacuum-size=50M
 ```
-
----
-
-Se você quiser, eu posso criar **uma versão completamente formatada em Markdown pronta para publicar**, mantendo os comentários em inglês e com destaques de código mais limpos para leitura.
-
-Quer que eu faça isso?
-
-
 
 -----------------------MODELO SERVER.CFG SERVER NORMAL------------------------------------
 ```bash
