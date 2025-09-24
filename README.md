@@ -101,6 +101,9 @@ Arquivo localizado em:
 
 ```bash
 ./netpanzer -d
+
+# Para executar com modo debug
+./netpanzer -d -g
 ```
 
 * Edite com:
