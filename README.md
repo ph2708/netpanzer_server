@@ -278,6 +278,7 @@ sudo journalctl --vacuum-size=50M
 
 
 -----------------------MODELO SERVER.CFG SERVER NORMAL------------------------------------
+```bash
 radar.playeroutpostcolor = 1
 radar.alliedoutpostcolor = 11
 radar.enemyoutpostcolor = 4
@@ -336,10 +337,11 @@ interface.scrollrate = 1000
 interface.rankposition_x = 100
 interface.rankposition_y = 100
 interface.viewdrawbackgroundmode = 0
+```
 
 -----------------------MODELO SERVER.CFG SERVER FIGHTS ------------------------------------
 
-
+```bash
 radar.playeroutpostcolor = 1
 radar.alliedoutpostcolor = 11
 radar.enemyoutpostcolor = 4
@@ -398,4 +400,5 @@ interface.scrollrate = 1000
 interface.rankposition_x = 100
 interface.rankposition_y = 100
 interface.viewdrawbackgroundmode = 0
+```
 
